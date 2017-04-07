@@ -151,5 +151,4 @@ def lookup(term):
 
 
 if __name__ == '__main__':
-    print(list(lookup('peoplesoft')))
-    # app.run()
+    app.run()
