@@ -4,6 +4,7 @@ HOST: http://deoraclize.herokuapp.com
 # Deoraclize API
 
 API which provides you with explanations of abbreviations and acronyms used in Oracle.
+You can contribute your own terms on [this wiki page](https://github.com/honzajavorek/deoraclize/wiki/Deoraclize).
 
 ## Search [GET /search{?q}]
 
@@ -15,7 +16,6 @@ API which provides you with explanations of abbreviations and acronyms used in O
         + count (number, required) - Count of the search results
         + results (array, required, fixed-type)
             + (object)
-                + abbr (string, required) - Abbreviation matching the search term
                 + title (string, required) - Meaning of the abbreviation
                 + description (string) - Detailed description
                 + url (string, required) - URL to the source of the information
