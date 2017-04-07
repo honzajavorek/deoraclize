@@ -3,17 +3,19 @@ HOST: http://deoraclize.herokuapp.com
 
 # Deoraclize API
 
-## Search [GET /search{?term}]
+API which provides you with explanations of abbreviations and acronyms used in Oracle.
+
+## Search [GET /search{?q}]
 
 + Parameters
-    + term: OPC (required, string) - The acronym/abbreviation you want to lookup
+    + q: OPC (required, string) - The acronym/abbreviation you want to lookup
 
 + Response 200 (application/json)
     + Attributes
-        + count (number) - Count of the search results
-        + results (array)
+        + count (number, required) - Count of the search results
+        + results (array, required, fixed-type)
             + (object)
-                + abbr (string) - Abbreviation matching the search term
-                + title (string) - Meaning of the abbreviation
+                + abbr (string, required) - Abbreviation matching the search term
+                + title (string, required) - Meaning of the abbreviation
                 + description (string) - Detailed description
-                + url (string) - URL to the source of the information
+                + url (string, required) - URL to the source of the information
