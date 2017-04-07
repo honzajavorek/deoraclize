@@ -2,3 +2,4 @@ flask
 cssselect
 lxml
 requests
+gunicorn
