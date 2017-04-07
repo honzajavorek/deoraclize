@@ -12,6 +12,16 @@ curl http://deoraclize.herokuapp.com/search?q=OPC
 
 See full rendered [API docs](http://docs.deoraclize.apiary.io) for further details. The root URL of the API app redirects to the API docs, by the way.
 
+## Examples
+
+- http://deoraclize.herokuapp.com/search?q=opc
+- http://deoraclize.herokuapp.com/search?q=netbeans
+- http://deoraclize.herokuapp.com/search?q=beehive
+- http://deoraclize.herokuapp.com/search?q=nosql
+- http://deoraclize.herokuapp.com/search?q=instance
+- http://deoraclize.herokuapp.com/search?q=apiary
+- http://deoraclize.herokuapp.com/search?q=solaris
+
 ## Contribute
 
 - 📝 [Contribute your own terms](https://github.com/honzajavorek/deoraclize/wiki/Deoraclize)

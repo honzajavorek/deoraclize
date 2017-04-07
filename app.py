@@ -111,6 +111,45 @@ def lookup(term):
                 'url': url,
             }
 
+    base_url = 'https://en.wikipedia.org/wiki/List_of_acquisitions_by_Oracle'
+    res = requests.get(base_url)
+    dom = html.fromstring(res.content)
+    rows = dom.cssselect('.wikitable tr')
+
+    for row in rows:
+        try:
+            cells = row.cssselect('td')
+            date_cell = cells[0]
+            term_cell = cells[1]
+            def_cell = cells[2]
+        except LookupError as e:
+            continue
+
+        if term.lower() in (term_cell.text_content() or '').lower():
+            try:
+                url = term_cell.cssselect('a')[0].get('href')
+                if url and 'action=edit' in url:
+                    url = base_url
+                else:
+                    url = 'https://en.wikipedia.org' + url
+            except LookupError:
+                url = base_url
+
+            try:
+                date = date_cell.cssselect('span')[-1].text_content().strip()
+            except LookupError:
+                date = date_cell.text_content().strip()
+
+            yield {
+                'title': term_cell.text_content().strip(),
+                'description': 'Oracle acquisition ({}). {}.'.format(
+                    date,
+                    def_cell.text_content().strip().rstrip('.')
+                ),
+                'url': url,
+            }
+
 
 if __name__ == '__main__':
-    app.run()
+    print(list(lookup('peoplesoft')))
+    # app.run()
