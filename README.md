@@ -1,1 +1,1 @@
-# deoraclize
+deoraclize-apiary.apib
