@@ -29,6 +29,7 @@ def api():
 def lookup(term):
     res = requests.get('https://www.oracle.com/products/acquired-a-z.html')
     dom = html.fromstring(res.content)
+    dom.make_links_absolute(res.url)
     links = dom.cssselect('.cn12 li a')
 
     for link in links:
@@ -45,6 +46,7 @@ def lookup(term):
 
     res = requests.get('https://www.oracle.com/products/oracle-a-z.html')
     dom = html.fromstring(res.content)
+    dom.make_links_absolute(res.url)
     links = dom.cssselect('.cn12 li a')
 
     for link in links:
@@ -62,6 +64,7 @@ def lookup(term):
     base_url = 'https://docs.oracle.com/cloud/latest/stcomputecs/STCSG/GUID-6CB9D494-4F3C-4B78-BD03-127983FEC357.htm'
     res = requests.get(base_url)
     dom = html.fromstring(res.content)
+    dom.make_links_absolute(res.url)
     rows = dom.cssselect('tr')
 
     for row in rows:
@@ -84,6 +87,7 @@ def lookup(term):
     base_url = 'https://github.com/honzajavorek/deoraclize/wiki/Deoraclize'
     res = requests.get(base_url)
     dom = html.fromstring(res.content)
+    dom.make_links_absolute(res.url)
     headings = dom.cssselect('.wiki-body h2')
 
     for heading in headings:
@@ -114,6 +118,7 @@ def lookup(term):
     base_url = 'https://en.wikipedia.org/wiki/List_of_acquisitions_by_Oracle'
     res = requests.get(base_url)
     dom = html.fromstring(res.content)
+    dom.make_links_absolute(res.url)
     rows = dom.cssselect('.wikitable tr')
 
     for row in rows:
@@ -151,4 +156,4 @@ def lookup(term):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
