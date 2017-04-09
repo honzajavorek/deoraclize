@@ -14,13 +14,7 @@ See full rendered [API docs](http://docs.deoraclize.apiary.io) for further detai
 
 ## Examples
 
-- http://deoraclize.herokuapp.com/search?q=opc
-- http://deoraclize.herokuapp.com/search?q=netbeans
-- http://deoraclize.herokuapp.com/search?q=beehive
-- http://deoraclize.herokuapp.com/search?q=nosql
-- http://deoraclize.herokuapp.com/search?q=instance
-- http://deoraclize.herokuapp.com/search?q=apiary
-- http://deoraclize.herokuapp.com/search?q=solaris
+[opc](http://deoraclize.herokuapp.com/search?q=opc), [netbeans](http://deoraclize.herokuapp.com/search?q=netbeans), [beehive](http://deoraclize.herokuapp.com/search?q=beehive), [nosql](http://deoraclize.herokuapp.com/search?q=nosql), [instance](http://deoraclize.herokuapp.com/search?q=instance), [apiary](http://deoraclize.herokuapp.com/search?q=apiary), [solaris](http://deoraclize.herokuapp.com/search?q=solaris), ...
 
 ## Contribute
 
