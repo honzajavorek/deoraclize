@@ -3,3 +3,4 @@ cssselect
 lxml
 requests
 gunicorn
+werkzeug

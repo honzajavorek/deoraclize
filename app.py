@@ -1,11 +1,20 @@
+import os
 import re
+import traceback
 
 import requests
 from lxml import html
 from flask import Flask, redirect, jsonify, request, abort
+from werkzeug.contrib.cache import FileSystemCache
+
+
+HOUR = 3600
+ROOT_DIR = os.path.join(os.path.dirname(__file__))
+CACHE_DIR = os.path.join(ROOT_DIR, 'cache')
 
 
 app = Flask(__name__)
+cache = FileSystemCache(CACHE_DIR, default_timeout=HOUR * 24 * 7)
 
 
 @app.route('/')
@@ -28,10 +37,16 @@ def api():
 
 def lookup(term):
     try:
-        res = requests.get('https://www.oracle.com/products/acquired-a-z.html')
-        res.raise_for_status()
-        dom = html.fromstring(res.content)
-        dom.make_links_absolute(res.url)
+        url = 'https://www.oracle.com/products/acquired-a-z.html'
+        content = cache.get(url)
+        if content is None:
+            res = requests.get(url)
+            res.raise_for_status()
+            content = res.content
+            cache.set(url, content)
+
+        dom = html.fromstring(content)
+        dom.make_links_absolute(url)
         links = dom.cssselect('.cn12 li a')
 
         for link in links:
@@ -46,13 +61,20 @@ def lookup(term):
                     'url': url,
                 }
     except Exception as e:
-        print('Unable to request acquired products:', e.message)
+        print('Unable to request acquired products:', e)
+        traceback.print_exc()
 
     try:
-        res = requests.get('https://www.oracle.com/products/oracle-a-z.html')
-        res.raise_for_status()
-        dom = html.fromstring(res.content)
-        dom.make_links_absolute(res.url)
+        url = 'https://www.oracle.com/products/oracle-a-z.html'
+        content = cache.get(url)
+        if content is None:
+            res = requests.get('https://www.oracle.com/products/oracle-a-z.html')
+            res.raise_for_status()
+            content = res.content
+            cache.set(url, content)
+
+        dom = html.fromstring(content)
+        dom.make_links_absolute(url)
         links = dom.cssselect('.cn12 li a')
 
         for link in links:
@@ -67,14 +89,20 @@ def lookup(term):
                     'url': url,
                 }
     except Exception as e:
-        print('Unable to request products:', e.message)
+        print('Unable to request products:', e)
+        traceback.print_exc()
 
     try:
         base_url = 'https://docs.oracle.com/cloud/latest/stcomputecs/STCSG/GUID-6CB9D494-4F3C-4B78-BD03-127983FEC357.htm'
-        res = requests.get(base_url)
-        res.raise_for_status()
-        dom = html.fromstring(res.content)
-        dom.make_links_absolute(res.url)
+        content = cache.get(base_url)
+        if content is None:
+            res = requests.get(base_url)
+            res.raise_for_status()
+            content = res.content
+            cache.set(base_url, content)
+
+        dom = html.fromstring(content)
+        dom.make_links_absolute(base_url)
         rows = dom.cssselect('tr')
 
         for row in rows:
@@ -94,14 +122,20 @@ def lookup(term):
                     'url': url,
                 }
     except Exception as e:
-        print('Unable to request acquired Oracle Cloud terms:', e.message)
+        print('Unable to request acquired Oracle Cloud terms:', e)
+        traceback.print_exc()
 
     try:
         base_url = 'https://github.com/honzajavorek/deoraclize/wiki/Deoraclize'
-        res = requests.get(base_url)
-        res.raise_for_status()
-        dom = html.fromstring(res.content)
-        dom.make_links_absolute(res.url)
+        content = cache.get(base_url)
+        if content is None:
+            res = requests.get(base_url)
+            res.raise_for_status()
+            content = res.content
+            cache.set(base_url, content, timeout=HOUR)
+
+        dom = html.fromstring(content)
+        dom.make_links_absolute(base_url)
         headings = dom.cssselect('.wiki-body h2')
 
         for heading in headings:
@@ -129,14 +163,20 @@ def lookup(term):
                     'url': url,
                 }
     except Exception as e:
-        print('Unable to request user-contributed wiki page:', e.message)
+        print('Unable to request user-contributed wiki page:', e)
+        traceback.print_exc()
 
     try:
         base_url = 'https://en.wikipedia.org/wiki/List_of_acquisitions_by_Oracle'
-        res = requests.get(base_url)
-        res.raise_for_status()
-        dom = html.fromstring(res.content)
-        dom.make_links_absolute(res.url)
+        content = cache.get(base_url)
+        if content is None:
+            res = requests.get(base_url)
+            res.raise_for_status()
+            content = res.content
+            cache.set(base_url, content)
+
+        dom = html.fromstring(content)
+        dom.make_links_absolute(base_url)
         rows = dom.cssselect('.wikitable tr')
 
         for row in rows:
@@ -172,7 +212,8 @@ def lookup(term):
                     'url': url,
                 }
     except Exception as e:
-        print('Unable to request Wikipedia page:', e.message)
+        print('Unable to request Wikipedia page:', e)
+        traceback.print_exc()
 
 
 if __name__ == '__main__':
